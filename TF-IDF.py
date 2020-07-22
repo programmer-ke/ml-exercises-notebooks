@@ -20,6 +20,7 @@ tf = hashingTF.transform(documents)
 
 # At this point we have an RDD of sparse vectors representing each document,
 # where each value maps to the term frequency of each unique hash value.
+# [{<hash_value>: <tf>, ..}, ..]
 
 # Let's compute the TF*IDF of each term in each document:
 tf.cache()
@@ -28,6 +29,7 @@ tfidf = idf.transform(tf)
 
 # Now we have an RDD of sparse vectors, where each value is the TFxIDF
 # of each unique hash value for each document.
+# [{<hash_value>: <tf*idf>, ..}, ..]
 
 # I happen to know that the article for "Abraham Lincoln" is in our data
 # set, so let's search for "Gettysburg" (Lincoln gave a famous speech there):
@@ -46,4 +48,4 @@ zippedResults = gettysburgRelevance.zip(documentNames)
 
 # And, print the document with the maximum TF*IDF value:
 print("Best document for Gettysburg is:")
-print(zippedResults.max())
+print(zippedResults.sortByKey(ascending=False).take(5))

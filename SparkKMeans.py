@@ -29,7 +29,7 @@ random.seed(0)
 data = sc.parallelize(scale(createClusteredData(100, K)))
 
 # Build the model (cluster the data)
-clusters = KMeans.train(data, K, maxIterations=10,
+clusters = KMeans.train(data, 5, maxIterations=10,
         runs=10, initializationMode="random")
 
 # Print out the cluster assignments
@@ -54,5 +54,8 @@ print("Within Set Sum of Squared Error = " + str(WSSSE))
 
 # Things to try:
 # What happens to WSSSE as you increase or decrease K? Why?
+# - Increasing: more clusters, smaller wssse, reduced bias, increased variance
+# - Decreasing: converse of above
 # What happens if you don't normalize the input data before clustering?
+# - Very large wssse
 # What happens if you change the maxIterations or runs parameters?
